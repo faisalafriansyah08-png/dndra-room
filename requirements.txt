@@ -1,1 +1,14 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+psycopg2-binary
+python-jose[cryptography]
+passlib[bcrypt]
+bcrypt==4.0.1
+pydantic[email]
 pydantic-settings
+alembic
+python-multipart
+httpx
+emails
+jinja2

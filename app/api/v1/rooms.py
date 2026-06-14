@@ -9,9 +9,9 @@ from app.models.user import UserRole
 from app.schemas.room import RoomCreate, RoomUpdate, RoomResponse, RoomAvailability
 from app.dependencies import get_current_user, require_role
 from app.services.booking_service import BookingService
+from app.core.config import get_settings
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File
 import os, uuid, shutil
-
 router = APIRouter(prefix="/rooms")
 
 
@@ -172,7 +172,8 @@ async def upload_room_image(
 
     # Update images di database
     current_images = room.images or []
-    image_url = f"https://dndra-room-production.up.railway.app/uploads/rooms/{filename}"
+    settings = get_settings()
+    image_url = f"{settings.BACKEND_URL}/uploads/rooms/{filename}"
     room.images = current_images + [image_url]
     db.commit()
     db.refresh(room)

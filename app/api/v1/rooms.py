@@ -9,7 +9,7 @@ from app.models.user import UserRole
 from app.schemas.room import RoomCreate, RoomUpdate, RoomResponse, RoomAvailability
 from app.dependencies import get_current_user, require_role
 from app.services.booking_service import BookingService
-from app.core.config import get_settings
+from app.config import get_settings
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File
 import os, uuid, shutil
 router = APIRouter(prefix="/rooms")

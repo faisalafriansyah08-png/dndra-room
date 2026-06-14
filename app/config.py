@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 30
     
     # CORS
-    ALLOWED_ORIGINS: str = "http://localhost:3000"
+    ALLOWED_ORIGINS: str = "https://dndra-rooms.netlify.app,https://dndra-room.netlify.app"
     
     # Email
     SMTP_HOST: str = "smtp.gmail.com"
@@ -41,7 +41,7 @@ class Settings(BaseSettings):
     MIDTRANS_IS_PRODUCTION: bool = False
     
     # URLs
-    FRONTEND_URL: str = "http://localhost:3000"
+    FRONTEND_URL: str = "https://dndra-rooms.netlify.app"
     BACKEND_URL: str = "https://dndra-room-production.up.railway.app"
     
     # File Upload

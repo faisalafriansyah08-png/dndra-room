@@ -53,5 +53,7 @@ app.include_router(promos.router, prefix=f"/api/{settings.API_VERSION}", tags=["
 app.include_router(support.router, prefix=f"/api/{settings.API_VERSION}", tags=["Support"])
 app.include_router(users.router, prefix=f"/api/{settings.API_VERSION}", tags=["Users"])
 if __name__ == "__main__":
+    import os
     import uvicorn
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("app.main:app", host="0.0.0.0", port=port)

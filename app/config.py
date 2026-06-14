@@ -42,7 +42,7 @@ class Settings(BaseSettings):
     
     # URLs
     FRONTEND_URL: str = "http://localhost:3000"
-    BACKEND_URL: str = "http://localhost:8000"
+    BACKEND_URL: str = "https://dndra-room-production.up.railway.app"
     
     # File Upload
     MAX_UPLOAD_SIZE: int = 5242880

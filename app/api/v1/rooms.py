@@ -11,6 +11,7 @@ from app.dependencies import get_current_user, require_role
 from app.services.booking_service import BookingService
 from fastapi import APIRouter, Depends, HTTPException, Query, UploadFile, File
 import os, uuid, shutil
+
 router = APIRouter(prefix="/rooms")
 
 
@@ -171,7 +172,7 @@ async def upload_room_image(
 
     # Update images di database
     current_images = room.images or []
-    image_url = f"http://localhost:8000/uploads/rooms/{filename}"
+    image_url = f"https://dndra-room-production.up.railway.app/uploads/rooms/{filename}"
     room.images = current_images + [image_url]
     db.commit()
     db.refresh(room)

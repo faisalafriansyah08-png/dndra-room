@@ -1,6 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.requests import Request
 from app.config import get_settings
 from app.database import Base, engine
 from app.api.v1 import auth, rooms, bookings, payments, promos, support, users
@@ -22,6 +24,17 @@ app = FastAPI(
     openapi_url=f"/api/{settings.API_VERSION}/openapi.json"
 )
 
+# Middleware untuk memaksa skema HTTPS saat berjalan di proxy seperti Railway
+class ForceHTTPSMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        if request.headers.get("x-forwarded-proto") == "https":
+            request.scope["scheme"] = "https"
+        response = await call_next(request)
+        return response
+
+# Pasang ForceHTTPSMiddleware paling atas sebelum CORS
+app.add_middleware(ForceHTTPSMiddleware)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -32,6 +45,7 @@ app.add_middleware(
 
 # Serve static files (gambar yang diupload)
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+
 @app.get("/")
 async def root():
     return {
@@ -52,8 +66,8 @@ app.include_router(payments.router, prefix=f"/api/{settings.API_VERSION}", tags=
 app.include_router(promos.router, prefix=f"/api/{settings.API_VERSION}", tags=["Promos"])
 app.include_router(support.router, prefix=f"/api/{settings.API_VERSION}", tags=["Support"])
 app.include_router(users.router, prefix=f"/api/{settings.API_VERSION}", tags=["Users"])
+
 if __name__ == "__main__":
-    import os
     import uvicorn
     port = int(os.environ.get("PORT", 8000))
-    uvicorn.run("app.main:app", host="0.0.0.0", port=port) 
+    uvicorn.run("app.main:app", host="0.0.0.0", port=port)
